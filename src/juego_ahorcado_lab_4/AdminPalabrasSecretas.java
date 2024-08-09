@@ -18,7 +18,7 @@ public class AdminPalabrasSecretas {
     public void agregarPalabra(String palabra) {
         if (palabra != null && !palabra.isEmpty()){
             palabras.add(palabra);
-            System.out.println("Su palabra ha sido agregada correctamente: " + palabra);
+            System.out.println("Su palabra ha sido agregada correctamente: " + palabra);//Prueba de que sirve
         }
     }
     
@@ -34,17 +34,6 @@ public class AdminPalabrasSecretas {
         return palabra_Seleccionada;
     }
     
-    //Metodo para mostrar todas las palabras de la lista
-    public void mostrarPalabras() {
-        if (palabras.isEmpty()) {
-            System.out.println("No hay palabras en el listado.");
-        } else {
-            System.out.println("Lista de palabras:");
-            for (String palabra : palabras) {
-                System.out.println("- " + palabra);
-            }
-        }
-    }
     //Metodo para obtener la lista de palabras
     public List<String> getPalabras() {
         return palabras;

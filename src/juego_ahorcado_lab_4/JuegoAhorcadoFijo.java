@@ -12,22 +12,18 @@ import javax.swing.JOptionPane;
  */
 public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
     
-    // Constructor que acepta una palabra secreta fija
     public JuegoAhorcadoFijo(String palabraSecreta) {
         this.palabraSecreta = palabraSecreta;
         this.palabraActual = "_".repeat(palabraSecreta.length());
         this.intentos = 10;
     }
 
-    // Implementacion del metodo para iniciar una palabra secreta
     @Override
     public void inicializarPalabraSecreta() {
         //No es necesario hacer nada aca, debido a que la palabra secreta ya ha sido inicializada en el constructor
         System.out.println("La palabra secreta es: " + palabraSecreta);
     }
 
-    //Aqui se implementa el uno de los metodos para actualizar la palabra que se esta manejando en el momento
-    //Por eso se le llama palabra actual
     @Override
     protected void actualizarPalabraActual(char letra) {
         String nuevaPalabraActual = "";
@@ -40,8 +36,7 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         }
         palabraActual = nuevaPalabraActual;
     }
-
-    //La implementacion de este metodo es para verificar la letra que va ingresando el usuario
+    
     @Override
     protected boolean verificarLetra(char letra) {
         boolean esCorrecta = palabraSecreta.indexOf(letra) >= 0;
@@ -53,35 +48,34 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
         return esCorrecta;
     }
 
-    //Se implementa el metodo de si el usuario gano el juego
     @Override
     protected boolean hasGanado() {
-        return palabraActual.toString().equals(palabraSecreta);
+        return palabraActual.equals(palabraSecreta);
     }
 
-    //Esta es la logica del juego donde se muestran los guiones y sus intentos, una vez que adivine o no la palabra, se muestran sus respectivos mensajes
-    @Override
     public void jugar() {
-        JOptionPane.showMessageDialog(null, "Adivina la palabra secreta fija.");
+        JOptionPane.showMessageDialog(null, "¡HORA DE EMPEZAR!\nAdivina la palabra");
         while (!hasGanado() && intentos > 0) {
-            String letra = JOptionPane.showInputDialog(null, "Palabra: " + palabraActual
+            String letra=" ";
+            letra = JOptionPane.showInputDialog(null, "Palabra: " + palabraActual
                     + "\nIntentos: " + intentos
                     + "\nIngresa una letra:");
-
             if (letra == null || letra.isEmpty()) {
                 break;
-            }
-            char letraChar = letra.charAt(0);
-            if (verificarLetra(letraChar)) {
-                actualizarPalabraActual(letraChar);
-                if (hasGanado()) {
-                    JOptionPane.showMessageDialog(null, "¡FELICIDADES! Has ganado. La palabra era: " + palabraSecreta);
-                }
-            } else {
-                if (intentos == 0) {
-                    JOptionPane.showMessageDialog(null, "¡Lo siento! Has perdido. La palabra era: " + palabraSecreta);
+            }else{ //El error que salia era porque letras las convertia antes de que fuera el break si estaba vacia.
+                letra=letra.toUpperCase();
+                char letraChar = letra.charAt(0);
+                if (verificarLetra(letraChar)) {
+                    actualizarPalabraActual(letraChar);
+                    if (hasGanado()) {
+                        JOptionPane.showMessageDialog(null, "¡FELICIDADES GANASTE! Su palabra era: " + palabraSecreta);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Letra incorrecta. Intenta de nuevo.");
+                    if (intentos == 0) {
+                        JOptionPane.showMessageDialog(null, "¡UPS PERDEDOR! La palabra era: " + palabraSecreta);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "UPS. Letra incorrecta, por favor intenta de nuevo.");
+                    }
                 }
             }
         }

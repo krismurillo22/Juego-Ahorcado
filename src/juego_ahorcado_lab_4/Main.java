@@ -28,16 +28,11 @@ public class Main extends JFrame{
     AdminPalabrasSecretas admin;
     JuegoAhorcadoAzar juegoAzar; 
     JuegoAhorcadoFijo juegoFijo; 
-    private JTextArea textArea;
-    private JTextField textField;
-    private JButton botonMandarDatos;
 
     
     public Main() {
         admin = new AdminPalabrasSecretas();
-        
-        
-        admin.agregarPalabra("Manzanas");
+        admin.agregarPalabra("MANZANAS");
         setTitle("Ahorcado");
         setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,40 +43,58 @@ public class Main extends JFrame{
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titlePanel.add(titleLabel);
 
-        // Crear los botones
         JPanel buttonPanel = new JPanel();
-        JButton btnFijo = new JButton("Juego Fijo");
-        JButton btnAzar = new JButton("Juego Azar");
+        JButton btnFijo = new JButton("Ahorcado Fijo");
+        JButton btnAzar = new JButton("Ahorcado al Azar");
         JButton btnAgregar = new JButton("Agregar Palabra");
         JButton Salir = new JButton("Salir");
+        
+        btnFijo.setFocusable(false);
+        btnAzar.setFocusable(false);
+        btnAgregar.setFocusable(false);
+        Salir.setFocusable(false);
+        
         btnFijo.setPreferredSize(new Dimension(180, 50));
         btnAzar.setPreferredSize(new Dimension(180, 50));
         btnAgregar.setPreferredSize(new Dimension(180, 50));
         Salir.setPreferredSize(new Dimension(180, 50));
-        // Ajustar la fuente de los botones
-        btnFijo.setFont(new Font("Arial", Font.PLAIN, 18));
-        btnAzar.setFont(new Font("Arial", Font.PLAIN, 18));
-        btnAgregar.setFont(new Font("Arial", Font.PLAIN, 18));
-        Salir.setFont(new Font("Arial", Font.PLAIN, 18));
-        // Añadir los botones al panel
+        
+        //Esto es pura decoracion para los botones
+        btnFijo.setFont(new Font("Arial", Font.BOLD, 18));
+        btnAzar.setFont(new Font("Arial", Font.BOLD, 18));
+        btnAgregar.setFont(new Font("Arial", Font.BOLD, 18));
+        Salir.setFont(new Font("Arial", Font.BOLD, 18));
+
+        Color colorNuevoSalida = new Color(109, 14, 16);
+        Color colorNuevoOtros = new Color(139, 64, 66);
+        
+        Salir.setBackground(colorNuevoSalida);
+        btnAzar.setBackground(colorNuevoOtros);
+        btnFijo.setBackground(colorNuevoOtros);
+        btnAgregar.setBackground(colorNuevoOtros);
+        
+        Salir.setForeground(Color.WHITE);
+        btnFijo.setForeground(Color.WHITE);
+        btnAzar.setForeground(Color.WHITE);
+        btnAgregar.setForeground(Color.WHITE);
+        
         buttonPanel.add(btnFijo);
         buttonPanel.add(btnAzar);
         buttonPanel.add(btnAgregar);
         buttonPanel.add(Salir);
-        // Añadir los paneles al JFrame usando BorderLayout
+        
         add(titlePanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.CENTER);
 
         btnAgregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Mostrar un cuadro de diálogo para ingresar una palabra
                 String nuevaPalabra = JOptionPane.showInputDialog("Ingrese una nueva palabra:");
                 if (nuevaPalabra != null && !nuevaPalabra.trim().isEmpty()) {
-                    admin.agregarPalabra(nuevaPalabra);
+                    admin.agregarPalabra(nuevaPalabra.toUpperCase());
                     System.out.println("Palabra ingresada: " + nuevaPalabra);
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se ingresó ninguna palabra válida.");
+                    JOptionPane.showMessageDialog(null, "No se ingresó ninguna palabra valida.");
                 }
             }
         });
@@ -89,7 +102,6 @@ public class Main extends JFrame{
         Salir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Cerrar la aplicación
                 System.exit(0);
             }
         });
@@ -98,11 +110,10 @@ public class Main extends JFrame{
         btnAzar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Iniciar juego de ahorcado en modo azar
                 if (admin.getPalabras().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "No hay ninguna palabra agregada.\n Por favor agrega una palabra.");
+                    JOptionPane.showMessageDialog(null, "No hay ninguna palabra agregada.\n Por favor agregar una palabra.");
                 }else{
-                    JOptionPane.showMessageDialog(null, "Juego de Ahorcado en modo Azar iniciado!");
+                    JOptionPane.showMessageDialog(null, "¡Juego en modo Azar ACTIVADO!");
                     juegoAzar= new JuegoAhorcadoAzar(admin.obtenerPalabraAlAzar());  
                     juegoAzar.jugar();
                 }
@@ -115,9 +126,8 @@ public class Main extends JFrame{
                 // Iniciar juego de ahorcado en modo azar     
                 if (admin.getPalabras().isEmpty()){
                     JOptionPane.showMessageDialog(null, "No hay ninguna palabra agregada.\n Por favor agrega una palabra.");
-                    
                 }else{
-                    JOptionPane.showMessageDialog(null, "Juego de Ahorcado en modo Fijo iniciado!");
+                    JOptionPane.showMessageDialog(null, "¡Juego en modo Fijo ACTIVADO!");
                     String[] opciones = admin.getPalabras().toArray(new String[0]);;
                     String seleccion = (String) JOptionPane.showInputDialog(
                         null,
@@ -126,9 +136,8 @@ public class Main extends JFrame{
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         opciones,
-                        opciones[0] // Valor inicial seleccionado
+                        opciones[0]
                     );
-                    
                     if (seleccion != null) {
                         JOptionPane.showMessageDialog(null, "Palabra seleccionada: " + seleccion);
                         juegoFijo= new JuegoAhorcadoFijo(seleccion);  
@@ -137,14 +146,12 @@ public class Main extends JFrame{
                         JOptionPane.showMessageDialog(null, "No se seleccionó ninguna palabra.");
                     }
                     
-                    
                 }
             }
         });
     }
     
     public static void main(String[] args) {
-        // Crear y mostrar el JFrame
         new Main();
     }
 }

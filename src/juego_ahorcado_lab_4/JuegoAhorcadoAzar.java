@@ -13,22 +13,18 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
-    private String palabrasPosibles;
 
-    //Constructor de la clase
     public JuegoAhorcadoAzar(String palabra) {
         this.palabraSecreta = palabra;
         this.palabraActual = "_".repeat(palabraSecreta.length());
         this.intentos = 10;
     }
 
-    //Inicializacion del metodo para iniciar la seleccion de la palabra secreta
     @Override
     public void inicializarPalabraSecreta() {
-        
+        System.out.println("La palabra secreta es: " + palabraSecreta);
     }
 
-    //Aqui se implementa el metodo para actualizar la palabra actual en el juego
     @Override
     protected void actualizarPalabraActual(char letra) {
         String nuevaPalabraActual = "";
@@ -42,7 +38,6 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         palabraActual = nuevaPalabraActual;
     }
 
-    //Esta es la implementacion donde se verifican las letras
     @Override
     protected boolean verificarLetra(char letra) {
         boolean esCorrecta = palabraSecreta.indexOf(letra) >= 0;
@@ -54,32 +49,33 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
         return esCorrecta;
     }
     
-    //Aqui se implementa el metodo de que se ha ganado
     protected boolean hasGanado() {
-        return palabraActual.toString().equals(palabraSecreta);
+        return palabraActual.equals(palabraSecreta);
     }
 
     public void jugar() {
-        JOptionPane.showMessageDialog(null, "Adivina la palabra secreta al azar.");
+        JOptionPane.showMessageDialog(null, "¡HORA DE EMPEZAR!\nAdivina la palabra");
         while (!hasGanado() && intentos > 0) {
             String letra = JOptionPane.showInputDialog(null, "Palabra: " + palabraActual
                     + "\nIntentos: " + intentos
                     + "\nIngresa una letra:");
-
+            
             if (letra == null || letra.isEmpty()) {
                 break;
-            }
-            char letraChar = letra.charAt(0);
-            if (verificarLetra(letraChar)) {
-                actualizarPalabraActual(letraChar);
-                if (hasGanado()) {
-                    JOptionPane.showMessageDialog(null, "¡FELICIDADES! Has ganado. La palabra era: " + palabraSecreta);
-                }
-            } else {
-                if (intentos == 0) {
-                    JOptionPane.showMessageDialog(null, "¡Lo siento! Has perdido. La palabra era: " + palabraSecreta);
+            }else{
+                letra=letra.toUpperCase();
+                char letraChar = letra.charAt(0);
+                if (verificarLetra(letraChar)) {
+                    actualizarPalabraActual(letraChar);
+                    if (hasGanado()) {
+                        JOptionPane.showMessageDialog(null, "¡FELICIDADES GANASTE! Su palabra era: "+ palabraSecreta);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Letra incorrecta. Intenta de nuevo.");
+                    if (intentos == 0) {
+                        JOptionPane.showMessageDialog(null, "¡UPS PERDEDOR! La palabra era: " + palabraSecreta);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "UPS. Letra incorrecta, por favor intenta de nuevo.");
+                    }
                 }
             }
         }
