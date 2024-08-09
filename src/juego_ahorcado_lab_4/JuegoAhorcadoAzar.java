@@ -13,27 +13,19 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
-    private List<String> palabrasPosibles;
+    private String palabrasPosibles;
 
     //Constructor de la clase
-    public JuegoAhorcadoAzar(List<String> palabrasPosibles) {
-        this.palabrasPosibles = palabrasPosibles;
-        inicializarPalabraSecreta();
+    public JuegoAhorcadoAzar(String palabra) {
+        this.palabraSecreta = palabra;
+        this.palabraActual = "_".repeat(palabraSecreta.length());
+        this.intentos = 10;
     }
 
     //Inicializacion del metodo para iniciar la seleccion de la palabra secreta
     @Override
     public void inicializarPalabraSecreta() {
-        if (palabrasPosibles != null && !palabrasPosibles.isEmpty()) {
-             Random rand = new Random();
-            palabraSecreta = palabrasPosibles.get(rand.nextInt(palabrasPosibles.size()));
-            // Crear un String con guiones bajos repetidos
-            palabraActual = "_".repeat(palabraSecreta.length());
-            System.out.println("Palabra secreta seleccionada: " + palabraSecreta);
-        } else {
-            System.out.println("La lista de palabras se encuentra vacía.");
-            
-        }
+        
     }
 
     //Aqui se implementa el metodo para actualizar la palabra actual en el juego
@@ -68,9 +60,28 @@ public class JuegoAhorcadoAzar extends JuegoAhorcadoBase {
     }
 
     public void jugar() {
-        
-    }
+        JOptionPane.showMessageDialog(null, "Adivina la palabra secreta al azar.");
+        while (!hasGanado() && intentos > 0) {
+            String letra = JOptionPane.showInputDialog(null, "Palabra: " + palabraActual
+                    + "\nIntentos: " + intentos
+                    + "\nIngresa una letra:");
 
-    
-    
+            if (letra == null || letra.isEmpty()) {
+                break;
+            }
+            char letraChar = letra.charAt(0);
+            if (verificarLetra(letraChar)) {
+                actualizarPalabraActual(letraChar);
+                if (hasGanado()) {
+                    JOptionPane.showMessageDialog(null, "¡FELICIDADES! Has ganado. La palabra era: " + palabraSecreta);
+                }
+            } else {
+                if (intentos == 0) {
+                    JOptionPane.showMessageDialog(null, "¡Lo siento! Has perdido. La palabra era: " + palabraSecreta);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Letra incorrecta. Intenta de nuevo.");
+                }
+            }
+        }
+    }  
 }

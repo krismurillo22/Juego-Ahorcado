@@ -62,32 +62,28 @@ public class JuegoAhorcadoFijo extends JuegoAhorcadoBase {
     //Esta es la logica del juego donde se muestran los guiones y sus intentos, una vez que adivine o no la palabra, se muestran sus respectivos mensajes
     @Override
     public void jugar() {
-        char nuevaLetra = ' ';
-        while (intentos > 0 && !hasGanado()) {
-            System.out.println("Palabra actual: " + palabraActual);
-            System.out.println("Intentos restantes: " + intentos);
-            System.out.print("Introduce una letra: ");
-            String letra = JOptionPane.showInputDialog("Ingrese una nueva palabra:");
-            if (letra != null && !letra.isEmpty()) {
-                nuevaLetra = letra.charAt(0);
-                System.out.println("Letra ingresada: " + nuevaLetra);
-            } else {
-                JOptionPane.showMessageDialog(null, "No se ingresó ninguna letra.");
-            }
-            
-            if (verificarLetra(nuevaLetra)) {
-                System.out.println("¡Correcto!");
-            } else {
-                System.out.println("¡Incorrecto!");
-            }
+        JOptionPane.showMessageDialog(null, "Adivina la palabra secreta fija.");
+        while (!hasGanado() && intentos > 0) {
+            String letra = JOptionPane.showInputDialog(null, "Palabra: " + palabraActual
+                    + "\nIntentos: " + intentos
+                    + "\nIngresa una letra:");
 
-            if (hasGanado()) {
-                System.out.println("¡Felicidades! Has adivinado la palabra: " + palabraSecreta);
+            if (letra == null || letra.isEmpty()) {
+                break;
             }
-        }
-
-        if (!hasGanado()) {
-            System.out.println("¡Has perdido! La palabra era: " + palabraSecreta);
+            char letraChar = letra.charAt(0);
+            if (verificarLetra(letraChar)) {
+                actualizarPalabraActual(letraChar);
+                if (hasGanado()) {
+                    JOptionPane.showMessageDialog(null, "¡FELICIDADES! Has ganado. La palabra era: " + palabraSecreta);
+                }
+            } else {
+                if (intentos == 0) {
+                    JOptionPane.showMessageDialog(null, "¡Lo siento! Has perdido. La palabra era: " + palabraSecreta);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Letra incorrecta. Intenta de nuevo.");
+                }
+            }
         }
     }
 }

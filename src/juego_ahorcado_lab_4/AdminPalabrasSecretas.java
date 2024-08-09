@@ -28,7 +28,6 @@ public class AdminPalabrasSecretas {
             System.out.println("No hay palabras disponibles para obtener.");
             return null;
         }
-        
         Random ran = new Random();
         String palabra_Seleccionada = palabras.get(ran.nextInt(palabras.size()));
         System.out.println("La palabra que fue seleccionada al azar es: " + palabra_Seleccionada);
@@ -46,21 +45,6 @@ public class AdminPalabrasSecretas {
             }
         }
     }
-    
-    //Metodo para eliminar una palabra en especifico que decida el usuario
-    public void eliminarPalabra(String palabra) {
-        if (palabras.remove(palabra)) {
-            System.out.println("Palabra que ha sido eliminada: " + palabra);
-        } else {
-            System.out.println("La palabra no se encontró en la lista.");
-        }
-    }
-    
-    //Metodo para obtener la cantidad de palabras en la lista
-    public int obtenerCantidadDePalabras() {
-        return palabras.size();
-    }
-
     //Metodo para obtener la lista de palabras
     public List<String> getPalabras() {
         return palabras;

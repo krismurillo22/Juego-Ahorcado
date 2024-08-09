@@ -16,6 +16,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  *
@@ -24,11 +27,17 @@ import javax.swing.JPanel;
 public class Main extends JFrame{
     AdminPalabrasSecretas admin;
     JuegoAhorcadoAzar juegoAzar; 
+    JuegoAhorcadoFijo juegoFijo; 
+    private JTextArea textArea;
+    private JTextField textField;
+    private JButton botonMandarDatos;
+
     
     public Main() {
         admin = new AdminPalabrasSecretas();
-        juegoAzar= new JuegoAhorcadoAzar(admin.getPalabras());
         
+        
+        admin.agregarPalabra("Manzanas");
         setTitle("Ahorcado");
         setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,11 +99,45 @@ public class Main extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Iniciar juego de ahorcado en modo azar
-                juegoAzar.inicializarPalabraSecreta();
                 if (admin.getPalabras().isEmpty()){
                     JOptionPane.showMessageDialog(null, "No hay ninguna palabra agregada.\n Por favor agrega una palabra.");
                 }else{
                     JOptionPane.showMessageDialog(null, "Juego de Ahorcado en modo Azar iniciado!");
+                    juegoAzar= new JuegoAhorcadoAzar(admin.obtenerPalabraAlAzar());  
+                    juegoAzar.jugar();
+                }
+            }
+        });
+        
+        btnFijo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Iniciar juego de ahorcado en modo azar     
+                if (admin.getPalabras().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "No hay ninguna palabra agregada.\n Por favor agrega una palabra.");
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null, "Juego de Ahorcado en modo Fijo iniciado!");
+                    String[] opciones = admin.getPalabras().toArray(new String[0]);;
+                    String seleccion = (String) JOptionPane.showInputDialog(
+                        null,
+                        "Selecciona una palabra:",
+                        "Seleccionar Palabra",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0] // Valor inicial seleccionado
+                    );
+                    
+                    if (seleccion != null) {
+                        JOptionPane.showMessageDialog(null, "Palabra seleccionada: " + seleccion);
+                        juegoFijo= new JuegoAhorcadoFijo(seleccion);  
+                        juegoFijo.jugar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se seleccionó ninguna palabra.");
+                    }
+                    
+                    
                 }
             }
         });
